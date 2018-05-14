@@ -120,5 +120,37 @@ module Yotpo
     def add_vote_to_review(params)
       get("reviews/#{params[:review_id]}/vote/#{params[:vote_value]}")
     end
+
+    #
+    # Gets reviews of a specific product
+    #
+    # @param [Hash] params
+    # @option params [String] :app_key the app key of the account for which the review is created
+    def get_site_reviews_bottomline(params)
+      app_key = params[:app_key]
+      get("products/#{app_key}/yotpo_site_reviews/bottomline")
+    end
+
+    #
+    # Gets data for site reviews widget
+    #
+    # @param [Hash] params
+    # @option params [String] :app_key the app key of the account for which the review is created
+    def get_site_reviews_widget(params)
+      app_key = params[:app_key]
+      page = params[:page]
+      page_size = params[:page_size]
+      sort = params[:sort]
+      sort_direction = params[:sort_direction]
+
+      request = {
+        page: page,
+        per_page: page_size,
+        sort: sort,
+        direction: sort_direction
+      }
+      request.delete_if{|key,val| val.nil? }
+      get("v1/widget/#{app_key}/products/yotpo_site_reviews/reviews.json", request)
+    end
   end
 end
