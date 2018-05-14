@@ -16,7 +16,12 @@ module Yotpo
     # @option params [String] :review_body the review itself
     # @option params [String] :review_title the review title
     # @option params [String Integer] :review_score the rating of the review
-    # @option params [String] :utoken the token of the user who wrote the review (if one exists)
+    # @option params [String] :user_id External user id, can be used later on to retrieve reviews associated with this user
+    # @option params [Hash] :custom_fields hash of custom field values
+    # @option params [String] :signature for verified reviewers
+    # @option params [String] :timestamp timestamp required for trusted vendors
+    # @option params [String] :reviewer_type 'verified_buyer' or 'verified_reviewer'
+
     # @return [::Hashie::Mash] The new review with all of it's data
     def create_review(params)
       request = {
@@ -32,10 +37,15 @@ module Yotpo
           review_content: params[:review_body],
           review_title: params[:review_title],
           review_score: params[:review_score],
-          utoken: params[:utoken]
+          user_reference: params[:user_id],
+          custom_fields: params[:custom_fields],
+
+          signature: params[:signature],
+          time_stamp: params[:timestamp],
+          reviewer_type: params[:reviewer_type]
       }
       request.delete_if { |element, value| value.nil? }
-      get('/reviews/dynamic_create', request)
+      post('/reviews/dynamic_create', request)
     end
 
     # Gets a specific review in Yotpo
