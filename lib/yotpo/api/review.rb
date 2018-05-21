@@ -89,7 +89,7 @@ module Yotpo
           user_reference: params[:user_reference]
       }
       request.delete_if{|key,val| val.nil? }
-      get("/v1/apps/#{app_key}/#{sku}/reviews", request)
+      get("/v1/apps/#{app_key}/reviews", request)
     end
 
     #
@@ -100,21 +100,24 @@ module Yotpo
     # @option params [String] :product_id the id of the product
     # @option params [Integer] :count the amount of reviews per page
     # @option params [Integer] :page the page number
-    # @option params [String] :since_id the id from which to start retrieving reviews
-    # @option params [String] :since_date the date from which to start retrieving reviews
-    # @option params [String] :utoken the users utoken to get the reviews that are most relevant to that user
     def get_product_reviews(params)
       app_key = params[:app_key]
       sku = params[:product_id]
+      page = params[:page]
+      page_size = params[:per_page]
+      star = params[:star]
+      sort = params[:sort]
+      sort_direction = params[:sort_direction]
+
       request = {
-          page: params[:page] || 1,
-          count: params[:per_page] || 5,
-          since_date: params[:since_date],
-          since_id: params[:since_id],
-          utoken: params[:utoken]
+        page: page,
+        per_page: page_size,
+        star: star,
+        sort: sort,
+        direction: sort_direction
       }
       request.delete_if{|key,val| val.nil? }
-      get("/products/#{app_key}/#{sku}/reviews", request)
+      get("/v1/widget/#{app_key}/products/#{sku}/reviews.json", request)
     end
 
     def add_vote_to_review(params)
@@ -139,13 +142,15 @@ module Yotpo
     def get_site_reviews_widget(params)
       app_key = params[:app_key]
       page = params[:page]
-      page_size = params[:page_size]
+      page_size = params[:per_page]
+      star = params[:star]
       sort = params[:sort]
       sort_direction = params[:sort_direction]
 
       request = {
         page: page,
         per_page: page_size,
+        star: star,
         sort: sort,
         direction: sort_direction
       }
