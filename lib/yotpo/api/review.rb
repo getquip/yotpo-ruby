@@ -39,6 +39,7 @@ module Yotpo
           review_score: params[:review_score],
           user_reference: params[:user_id],
           custom_fields: params[:custom_fields],
+          product_tags: params[:product_tags],
 
           signature: params[:signature],
           time_stamp: params[:timestamp],
