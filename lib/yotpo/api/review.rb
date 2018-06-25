@@ -125,8 +125,21 @@ module Yotpo
       get("reviews/#{params[:review_id]}/vote/#{params[:vote_value]}")
     end
 
+
     #
-    # Gets reviews of a specific product
+    # Gets bottomline of a specific product
+    #
+    # @param [Hash] params
+    # @option params [String] :app_key the app key of the account for which the review is created
+    # @option params [String] :product_id
+    def get_product_reviews_bottomline(params)
+      app_key = params[:app_key]
+      product_id = params[:product_id]
+      get("products/#{app_key}/#{product_id}/bottomline")
+    end
+
+    #
+    # Gets bottom line for site reviews
     #
     # @param [Hash] params
     # @option params [String] :app_key the app key of the account for which the review is created
