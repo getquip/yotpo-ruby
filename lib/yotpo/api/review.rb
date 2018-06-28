@@ -53,10 +53,12 @@ module Yotpo
     #
     # @param [Hash] params
     # @option params [String] :id the id of the review
+    # @option params [String] :utoken oauth token
     # @return [::Hashie::Mash] The review with all of it's data
     def get_review(params)
       review_id = params[:id]
-      get("/reviews/#{review_id}")
+      utoken = params[:utoken]
+      get("/reviews/#{review_id}", { utoken: utoken })
     end
 
     #
