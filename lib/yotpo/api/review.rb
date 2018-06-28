@@ -197,7 +197,7 @@ module Yotpo
             published: "1"
           }
         ],
-        sync: true
+        async: true
       }
 
       request.delete_if{|key,val| val.nil? }
