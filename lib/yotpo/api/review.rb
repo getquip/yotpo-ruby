@@ -173,5 +173,35 @@ module Yotpo
       request.delete_if{|key,val| val.nil? }
       get("v1/widget/#{app_key}/products/yotpo_site_reviews/reviews.json", request)
     end
+
+    # Convert reviews to site and product reviews
+    #
+    # @param [Hash] params
+    # @option params [String] :utoken oauth token
+    # @option params [String] :review_ids array of review ids to convert
+    def convert_reviews_to_site_and_product(params)
+      utoken = params[:utoken]
+      review_ids = params[:review_ids]
+
+      request = {
+        utoken: utoken,
+        review_ids: review_ids,
+        review_action: "change_mention_status",
+        attributes: [
+          {
+            type: "product",
+            published: "1"
+          },
+          {
+            type: "site",
+            published: "1"
+          }
+        ],
+        sync: true
+      }
+
+      request.delete_if{|key,val| val.nil? }
+      put("reviews/async_update", request)
+    end
   end
 end
