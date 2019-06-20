@@ -203,5 +203,18 @@ module Yotpo
       request.delete_if{|key,val| val.nil? }
       put("reviews/async_update", request)
     end
+
+    # Get reviews by user_id
+    #
+    # @param [Hash] params
+    # @option params [String] :app_key the app key of the account for which the review is created
+    # @option params [String] :user_id
+    def get_user_reviews(params)
+      app_key = params[:app_key]
+      user_id = params[:user_id]
+
+      request = { user_reference: user_id }
+      get("products/#{app_key}/yotpo_global_reviews/reviews.json", request)
+    end
   end
 end
