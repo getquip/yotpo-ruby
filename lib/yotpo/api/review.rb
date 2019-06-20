@@ -46,7 +46,7 @@ module Yotpo
           reviewer_type: params[:reviewer_type]
       }
       request.delete_if { |element, value| value.nil? }
-      post('/reviews/dynamic_create', request)
+      post('/v1/widget/reviews', request)
     end
 
     # Gets a specific review in Yotpo
