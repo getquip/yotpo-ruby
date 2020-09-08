@@ -25,28 +25,28 @@ module Yotpo
     # @return [::Hashie::Mash] The new review with all of it's data
     def create_review(params)
       request = {
-          appkey: params[:app_key],
-          sku: params[:product_id],
-          domain: params[:shop_domain],
-          product_title: params[:product_title],
-          product_description: params[:product_description],
-          product_url: params[:product_url],
-          product_image_url: params[:product_image_url],
-          display_name: params[:user_display_name],
-          email: params[:user_email],
-          review_content: params[:review_body],
-          review_title: params[:review_title],
-          review_score: params[:review_score],
-          user_reference: params[:user_id],
-          custom_fields: params[:custom_fields],
-          product_tags: params[:product_tags],
-
-          signature: params[:signature],
-          time_stamp: params[:timestamp],
-          reviewer_type: params[:reviewer_type]
+        appkey: params[:app_key],
+        sku: params[:product_id],
+        domain: params[:shop_domain],
+        product_title: params[:product_title],
+        product_description: params[:product_description],
+        product_url: params[:product_url],
+        product_image_url: params[:product_image_url],
+        display_name: params[:user_display_name],
+        email: params[:user_email],
+        review_content: params[:review_body],
+        review_title: params[:review_title],
+        review_score: params[:review_score],
+        user_reference: params[:user_id],
+        custom_fields: params[:custom_fields],
+        product_tags: params[:product_tags],
+        iovation_fp: params[:iovation_fp],
+        signature: params[:signature],
+        time_stamp: params[:timestamp],
+        reviewer_type: params[:reviewer_type],
       }
       request.delete_if { |element, value| value.nil? }
-      post('/reviews/dynamic_create', request)
+      post("/reviews/dynamic_create", request)
     end
 
     # Gets a specific review in Yotpo
@@ -81,17 +81,17 @@ module Yotpo
       app_key = params[:app_key]
       sku = params[:product_id]
       request = {
-          utoken: params[:utoken],
-          since_id: params[:since_id],
-          since_date: params[:since_date],
-          since_updated_at: params[:since_updated_at],
-          count: params[:per_page] || 20,
-          page: params[:page] || 1,
-          include_site_reviews: params[:include_site_reviews],
-          deleted: params[:deleted],
-          user_reference: params[:user_reference]
+        utoken: params[:utoken],
+        since_id: params[:since_id],
+        since_date: params[:since_date],
+        since_updated_at: params[:since_updated_at],
+        count: params[:per_page] || 20,
+        page: params[:page] || 1,
+        include_site_reviews: params[:include_site_reviews],
+        deleted: params[:deleted],
+        user_reference: params[:user_reference],
       }
-      request.delete_if{|key,val| val.nil? }
+      request.delete_if { |key, val| val.nil? }
       get("/v1/apps/#{app_key}/reviews", request)
     end
 
@@ -117,16 +117,15 @@ module Yotpo
         per_page: page_size,
         star: star,
         sort: sort,
-        direction: sort_direction
+        direction: sort_direction,
       }
-      request.delete_if{|key,val| val.nil? }
+      request.delete_if { |key, val| val.nil? }
       get("/v1/widget/#{app_key}/products/#{sku}/reviews.json", request)
     end
 
     def add_vote_to_review(params)
       get("reviews/#{params[:review_id]}/vote/#{params[:vote_value]}")
     end
-
 
     #
     # Gets bottomline of a specific product
@@ -168,9 +167,9 @@ module Yotpo
         per_page: page_size,
         star: star,
         sort: sort,
-        direction: sort_direction
+        direction: sort_direction,
       }
-      request.delete_if{|key,val| val.nil? }
+      request.delete_if { |key, val| val.nil? }
       get("v1/widget/#{app_key}/products/yotpo_site_reviews/reviews.json", request)
     end
 
@@ -190,17 +189,17 @@ module Yotpo
         attributes: [
           {
             type: "product",
-            published: "1"
+            published: "1",
           },
           {
             type: "site",
-            published: "1"
-          }
+            published: "1",
+          },
         ],
-        async: true
+        async: true,
       }
 
-      request.delete_if{|key,val| val.nil? }
+      request.delete_if { |key, val| val.nil? }
       put("reviews/async_update", request)
     end
 
